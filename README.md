@@ -1,237 +1,217 @@
-contin# AI Image Authenticity Analyzer
+﻿# Image Forensics Analyzer
 
-**Production-ready deep learning system** to detect AI-generated, AI-edited, and manipulated imagery with real-time analysis, heatmap visualization, and metadata forensics.
+ **Full-stack web application for detecting manipulated and AI-generated images using computer vision forensics.**
 
-## 🎯 Key capabilities
-- **AI vs Real Detection** – CLIP-based zero-shot classifier estimates synthetic generation probability
-- **Manipulation Heatmaps** – Error-Level Analysis (ELA) localizes edited regions with pixel-level precision
-- **Noise Consistency Analysis** – Noiseprint-inspired wavelet residual scoring detects sensor inconsistencies
-- **Metadata Forensics** – EXIF extraction with automated flagging of suspicious software/camera anomalies
-- **Modern Dashboard** – React + Tailwind UI with drag-and-drop upload, score gauges, heatmap overlays, and downloadable verdicts
+##  Live Demo
+- **Frontend**: [Your Vercel URL]
+- **Backend API**: [Your Render URL]
+- **GitHub**: https://github.com/vijayram8/fake-image-detector
 
-## 🏗️ Architecture
-```
-┌─────────────────┐        POST /analyze-image        ┌──────────────────┐
-│  React Client   │──────────────────────────────────▶│   Flask API      │
-│  (Port 5173)    │◀──────────────────────────────────│   (Port 5000)    │
-└─────────────────┘              JSON Response         └──────────────────┘
-                                                               │
-                              ┌────────────────────────────────┼────────────────────┐
-                              │                                │                    │
-                        ┌─────▼─────┐                  ┌──────▼───────┐     ┌─────▼──────┐
-                        │   CLIP    │                  │     ELA      │     │ Noiseprint │
-                        │ Classifier│                  │   Detector   │     │  Analyzer  │
-                        └───────────┘                  └──────────────┘     └────────────┘
-                           AI Score                    Heatmap + Score      Noise Score
-```
+---
 
-## 📂 Project structure
-```
-backend-flask/      Flask API, ML detectors, services, pytest suite
-  ├── detectors/    CLIP classifier, ELA detector, Noiseprint analyzer
-  ├── services/     Analysis orchestration layer
-  ├── utils/        EXIF extraction, validation helpers
-  └── tests/        Integration tests
-frontend-react/     Vite + React UI, Tailwind styling
-  ├── src/
-  │   ├── components/  Upload panel, score cards, heatmap viewer, metadata table
-  │   ├── hooks/       useImageAnalysis API hook
-  │   └── types/       TypeScript interfaces
-models/             Model registry metadata (weights stored externally)
-datasets/           Dataset manifests, curation scripts
-docs/               Architecture diagrams, API contract, research report
-```
+##  Features
 
-## 🚀 Getting started
+###  Detection Methods
+1. **ELA (Error-Level Analysis)** - Industry-standard JPEG compression forensics
+2. **Noiseprint Analysis** - Wavelet-based noise consistency detection  
+3. **EXIF Metadata Forensics** - Camera/editing software verification
+4. **AI Pattern Heuristics** - Lightweight AI-generation indicators
+
+###  Analysis Outputs
+- Manipulation probability scores
+- Real-time heatmap visualization
+- Metadata tampering detection
+- Downloadable forensic reports
+
+---
+
+##  Tech Stack
+
+### Backend
+- **Python 3.12** - Core language
+- **Flask** - REST API server
+- **OpenCV** - Image processing
+- **scikit-image** - Advanced analysis
+- **PyWavelets** - Noise analysis
+- **Waitress** - Production WSGI server
+
+### Frontend
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **Axios** - API client
+
+### Deployment
+- **Vercel** - Frontend hosting
+- **Render** - Backend hosting (free tier optimized!)
+
+---
+
+##  Quick Start
 
 ### Prerequisites
-- Python 3.11+ with pip
+- Python 3.12+
 - Node.js 18+
-- 4GB+ RAM (16GB recommended for GPU inference)
-- Optional: CUDA-capable GPU for faster CLIP inference
+- Git
 
-### Backend setup
-```powershell
+### Backend Setup
+```bash
 cd backend-flask
-python -m venv .venv
-.\\.venv\\Scripts\\activate
 pip install -r requirements.txt
 python wsgi.py
 ```
-Backend runs at `http://127.0.0.1:5000`
 
-### Frontend setup
-```powershell
+Backend runs on `http://127.0.0.1:5000`
+
+### Frontend Setup
+```bash
 cd frontend-react
 npm install
 npm run dev
 ```
-Frontend runs at `http://localhost:5173`
 
-### Environment variables (optional)
-Create `frontend-react/.env`:
+Frontend runs on `http://localhost:5173`
+
+---
+
+##  Project Structure
+
 ```
-VITE_API_URL=http://localhost:5000
+ backend-flask/
+    app/              # Flask application
+    detectors/        # Forensic algorithms
+       ai_classifier.py      # Heuristic AI detection
+       manipulation_detector.py  # ELA analysis
+       noiseprint.py         # Wavelet noise analysis
+    services/         # Business logic
+    utils/            # EXIF & validation
+    requirements.txt
+
+ frontend-react/
+    src/
+       components/   # React components
+       hooks/        # Custom hooks
+       types/        # TypeScript types
+    package.json
+
+ README.md
 ```
 
-## 🧪 Testing
+---
 
-### Run backend tests
-```powershell
-cd backend-flask
-pytest -v
-```
+##  How It Works
 
-### Test ML models
-```powershell
-cd backend-flask
-python test_models.py
-```
+### 1. Error-Level Analysis (ELA)
+Detects manipulations by analyzing JPEG compression inconsistencies:
+- Recompresses image at fixed quality
+- Calculates pixel-level differences
+- Generates heatmap showing edited regions
 
-### Build frontend
-```powershell
-cd frontend-react
-npm run build
-```
+### 2. Noiseprint Detection
+Uses wavelet decomposition to detect noise pattern inconsistencies:
+- Analyzes high-frequency image components
+- Detects cloned/spliced regions
+- Identifies AI-generated smoothness
 
-## 📊 Model performance
+### 3. EXIF Forensics
+Examines metadata for tampering indicators:
+- Missing camera information
+- Software editing signatures
+- Timestamp inconsistencies
 
-| Model | Task | Metric | Score |
-|---|---|---|---|
-| CLIP ViT-B/32 | AI vs Real Classification | Zero-shot | Baseline |
-| Error-Level Analysis | Manipulation Detection | Heatmap IoU | ~0.41 |
-| Noiseprint (Wavelet) | Noise Consistency | Variability | Adaptive |
+### 4. AI Heuristics
+Lightweight pattern analysis (no ML models):
+- Detects unnatural smoothness
+- Analyzes color saturation patterns
+- Checks noise distribution
+- **Optimized for free-tier deployment!**
 
-## 🔬 How it works
+---
 
-### 1. AI Generation Detection (CLIP)
-- Uses OpenAI's CLIP model for zero-shot classification
-- Compares image against prompts: "genuine photo" vs "ai-generated image"
-- Returns probability scores and label (likely_real / uncertain / likely_ai)
+##  For Freshers/Students
 
-### 2. Manipulation Detection (ELA)
-- Re-compresses image at quality 90 and computes pixel-wise differences
-- High error levels indicate potential edits (copy-paste, splicing, inpainting)
-- Generates colored heatmap highlighting suspicious regions
+This project demonstrates:
+-  Full-stack development (React + Flask)
+-  Computer vision algorithms
+-  REST API design
+-  Cloud deployment (Vercel + Render)
+-  TypeScript & modern React
+-  Professional code structure
+-  Production optimization
 
-### 3. Noise Analysis (Noiseprint)
-- Extracts sensor noise residual using wavelet denoising
-- Computes block-level standard deviation variability
-- Flags inconsistent patterns suggesting tampering
+**Perfect for your resume and interview discussions!**
 
-### 4. EXIF Forensics
-- Extracts camera model, software, GPS, timestamps
-- Flags missing metadata, Adobe tools, unknown software
-- Provides warnings for common manipulation indicators
+---
 
-## 📡 API Reference
+##  API Endpoints
 
-### POST `/analyze-image`
+### `POST /analyze-image`
+Upload image for forensic analysis
+
 **Request:**
-- Content-Type: `multipart/form-data`
-- Field: `image` (PNG/JPG/BMP/TIFF, max 25MB)
+```
+Content-Type: multipart/form-data
+image: <file>
+```
 
 **Response:**
 ```json
 {
-  "ai_score": 0.82,
-  "label": "likely_ai",
-  "prompt_scores": {
-    "real_photo": 0.18,
-    "ai_generated": 0.82
-  },
-  "manipulation_score": 0.63,
-  "heatmap": "<base64-encoded-png>",
-  "noise_score": 0.45,
-  "noise_heatmap": "<base64-encoded-png>",
-  "metadata": {
-    "Camera": "Canon EOS 80D",
-    "Software": "Adobe Photoshop"
-  },
-  "metadata_flags": {
-    "software_warning": "Adobe Photoshop"
-  },
-  "verdict": "Real but AI-edited"
+  "ai_score": 0.45,
+  "manipulation_score": 0.78,
+  "noise_score": 0.32,
+  "heatmap": "base64_encoded_image",
+  "metadata": { ... },
+  "verdict": "Real but edited/manipulated"
 }
 ```
 
-### GET `/health`
-Returns `{"status": "ok"}`
-
-## 🎨 Frontend features
-- **Drag-and-drop upload** with progress indicator
-- **Dual score gauges** for AI probability and manipulation strength
-- **Interactive heatmap overlay** toggle to compare original vs analysis
-- **Metadata table** with automated warnings
-- **Verdict card** with downloadable report (print to PDF)
-
-## 🔧 Deployment
-
-### Production considerations
-1. Replace Flask dev server with Gunicorn:
-   ```powershell
-   pip install gunicorn
-   gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app
-   ```
-
-2. Serve frontend with Nginx:
-   ```powershell
-   cd frontend-react
-   npm run build
-   # Copy dist/ to Nginx root
-   ```
-
-3. Add Redis caching for repeated analyses:
-   ```python
-   # Cache key: SHA256(image_bytes)
-   ```
-
-4. GPU optimization:
-   - Install CUDA toolkit
-   - Verify `torch.cuda.is_available()`
-   - Batch multiple requests
-
-## 📚 Datasets & Training
-
-See `datasets/README.md` for curation guidelines. Recommended sources:
-- **Real:** COCO, Open Images, Unsplash Lite
-- **AI-generated:** LAION-Aesthetics, Midjourney exports, DALL·E 3
-- **Manipulated:** COVERAGE, CASIA, Defacto Deepfake
-
-## 🛠️ Troubleshooting
-
-**CLIP model fails to load:**
-- Ensure torch >= 2.6.0 for security fixes
-- Check internet connection for HuggingFace downloads
-- Models cache in `~/.cache/huggingface/`
-
-**Heatmap not displaying:**
-- Verify base64 encoding in network tab
-- Check browser console for CORS errors
-- Ensure backend returns valid PNG data
-
-**High false positive rate:**
-- Adjust thresholds in `services/analysis_service.py`
-- Fine-tune on domain-specific datasets
-- Combine multiple detector outputs
-
-## 📈 Roadmap
-- [ ] Add DIRE/SPAN manipulation detectors
-- [ ] Support video frame analysis
-- [ ] Real-time webcam streaming mode
-- [ ] Batch processing API endpoint
-- [ ] Model explainability (Grad-CAM overlays)
-- [ ] Mobile app (React Native)
-
-## 📄 License
-MIT License - see LICENSE file
-
-## 🤝 Contributing
-Contributions welcome! See `docs/architecture.md` for system design details.
+### `GET /health`
+Health check endpoint
 
 ---
 
-**Quick Start:**  
-1. Backend: `cd backend-flask && pip install -r requirements.txt && python wsgi.py`  
-2. Frontend: `cd frontend-react && npm install && npm run dev`  
-3. Open http://localhost:5173 and upload an image!
+##  Why This Project Stands Out
+
+1. **Real-World Application** - Solves actual problem (deepfakes, misinformation)
+2. **Advanced Algorithms** - Not just CRUD, implements forensic techniques
+3. **Production-Ready** - Deployed and working live
+4. **Optimized** - Lightweight version works on free hosting tiers
+5. **Professional Code** - Type hints, separation of concerns, error handling
+
+---
+
+##  Future Enhancements
+
+- [ ] Batch image processing
+- [ ] User authentication
+- [ ] Analysis history storage
+- [ ] More detection algorithms (frequency analysis, GAN fingerprinting)
+- [ ] Mobile app version
+
+---
+
+##  License
+
+MIT License - Feel free to use for learning and portfolios!
+
+---
+
+##  Author
+
+**Vijayram**  
+- GitHub: [@vijayram8](https://github.com/vijayram8)
+- Project: [fake-image-detector](https://github.com/vijayram8/fake-image-detector)
+
+---
+
+##  Acknowledgments
+
+- Error-Level Analysis technique from forensic research
+- Wavelet denoising from scikit-image
+- Inspired by professional fact-checking tools
+
+---
+
+** Star this repo if it helped you learn something new!**
