@@ -1,1 +1,1 @@
-web: cd backend-flask && python wsgi.py
+web: cd backend-flask && waitress-serve --port= wsgi:application
