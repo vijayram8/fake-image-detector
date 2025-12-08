@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/heatmapviewer.tsx","./src/components/metadatatable.tsx","./src/components/reportcard.tsx","./src/components/scorecard.tsx","./src/components/uploadpanel.tsx","./src/hooks/useimageanalysis.ts","./src/types/analysis.ts"],"version":"5.6.3"}
