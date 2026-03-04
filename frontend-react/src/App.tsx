@@ -38,6 +38,9 @@ export default function App() {
         <p className="mt-2 text-slate-300">
           Upload any photo to receive AI probability, manipulation heatmaps, metadata forensics, and a downloadable report.
         </p>
+        <p className="mt-1 text-xs text-slate-500">
+          ⚡ Optimized for desktop browsers. Mobile may experience slower analysis times.
+        </p>
       </header>
 
       <main className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
