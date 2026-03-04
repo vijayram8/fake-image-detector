@@ -11,7 +11,7 @@ app = create_app()
 if __name__ == "__main__":
     try:
         from waitress import serve
-        port = int(os.environ.get("PORT", 5000))
+        port = int(os.environ.get("PORT", 7860))  # Default 7860 for Hugging Face Spaces
         host = '0.0.0.0'  # Listen on all interfaces for deployment
         print(f" * Starting Flask server with Waitress on {host}:{port}", flush=True)
         logger.info(f"Starting production server on port {port}...")
