@@ -19,7 +19,7 @@ function formatConfidence(label?: string) {
 }
 
 export default function App() {
-  const { analyze, data, isLoading, error } = useImageAnalysis();
+  const { analyze, data, isLoading, error, progress } = useImageAnalysis();
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>();
 
   const aiSubtitle = useMemo(() => formatConfidence(data?.label), [data]);
@@ -42,7 +42,7 @@ export default function App() {
 
       <main className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">
-          <UploadPanel onFileSelected={handleFileSelected} isLoading={isLoading} error={error} />
+          <UploadPanel onFileSelected={handleFileSelected} isLoading={isLoading} error={error} progress={progress} />
           <ReportCard analysis={data as ImageAnalysisResponse | undefined} />
         </div>
         <div className="space-y-6 lg:col-span-2">
