@@ -10,6 +10,19 @@ api_bp = Blueprint("api", __name__)
 analysis_service = ImageAnalysisService()
 
 
+@api_bp.route("/", methods=["GET"])
+def index() -> Any:
+    return jsonify({
+        "name": "AI Image Authenticity Analyzer API",
+        "version": "1.0.0",
+        "endpoints": {
+            "POST /analyze-image": "Upload an image for AI detection and manipulation analysis",
+            "GET /health": "Health check endpoint"
+        },
+        "status": "running"
+    }), HTTPStatus.OK
+
+
 @api_bp.route("/health", methods=["GET"])
 def health_check() -> Any:
     return jsonify({"status": "ok"}), HTTPStatus.OK
