@@ -39,7 +39,7 @@ export default function App() {
           Upload any photo to receive AI probability, manipulation heatmaps, metadata forensics, and a downloadable report.
         </p>
         <p className="mt-1 text-xs text-slate-500">
-          ⚡ Optimized for desktop browsers. Mobile may experience slower analysis times.
+          🖥️ Desktop-optimized for maximum CLIP model accuracy. Best experienced on Chrome/Firefox/Edge.
         </p>
       </header>
 
