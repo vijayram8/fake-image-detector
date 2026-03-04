@@ -2,12 +2,23 @@ import { useCallback, useState } from "react";
 import axios from "axios";
 import type { ImageAnalysisResponse } from "../types/analysis";
 
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
+
 interface UseImageAnalysis {
   analyze: (file: File) => Promise<void>;
   data?: ImageAnalysisResponse;
   isLoading: boolean;
   error?: string;
   progress?: string;
+}
+
+async function wakeUpServer(): Promise<boolean> {
+  try {
+    await axios.get(`${API_URL}/health`, { timeout: 30000 });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function useImageAnalysis(): UseImageAnalysis {
@@ -20,19 +31,34 @@ export function useImageAnalysis(): UseImageAnalysis {
     setIsLoading(true);
     setError(undefined);
     setData(undefined);
-    setProgress("Uploading image...");
+    
+    // Wake up server first
+    setProgress("Connecting to server...");
+    const serverAwake = await wakeUpServer();
+    if (!serverAwake) {
+      setProgress("Server is waking up, please wait...");
+      // Retry once
+      const retryAwake = await wakeUpServer();
+      if (!retryAwake) {
+        setError("Server is unavailable. Please try again in 1 minute.");
+        setIsLoading(false);
+        setProgress(undefined);
+        return;
+      }
+    }
 
+    setProgress("Uploading image...");
     const formData = new FormData();
     formData.append("image", file);
 
     try {
-      setProgress("Analyzing image (this may take 30-60 seconds on first use)...");
+      setProgress("Analyzing image (30-90 seconds)...");
       const response = await axios.post<ImageAnalysisResponse>(
-        `${import.meta.env.VITE_API_URL ?? "http://localhost:5000"}/analyze-image`,
+        `${API_URL}/analyze-image`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-          timeout: 120000, // 2 minute timeout for slow mobile/cold start
+          timeout: 180000, // 3 minute timeout
         }
       );
       setData(response.data);
@@ -41,7 +67,7 @@ export function useImageAnalysis(): UseImageAnalysis {
       console.error("Analysis failed:", err);
       if (axios.isAxiosError(err)) {
         if (err.code === 'ECONNABORTED' || err.message.includes('timeout')) {
-          setError("Request timed out. The server may be waking up - please try again in 30 seconds.");
+          setError("Analysis timed out. Server is slow - please try a smaller image or try again.");
         } else if (err.response) {
           setError(`Server error: ${err.response.data?.error || err.response.statusText}`);
         } else if (err.request) {

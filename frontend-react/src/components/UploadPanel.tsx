@@ -8,14 +8,60 @@ interface UploadPanelProps {
 }
 
 const ACCEPTED = ["image/png", "image/jpeg", "image/webp", "image/bmp", "image/tiff"];
-const MAX_SIZE_MB = 10;
+const MAX_SIZE_MB = 5;
+const MAX_DIMENSION = 1920;
+
+// Compress image for faster upload on mobile
+async function compressImage(file: File): Promise<File> {
+  return new Promise((resolve) => {
+    // Skip non-image or already small files
+    if (!file.type.startsWith('image/') || file.size < 500 * 1024) {
+      resolve(file);
+      return;
+    }
+
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    img.onload = () => {
+      let { width, height } = img;
+      
+      // Scale down if too large
+      if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+        const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob && blob.size < file.size) {
+            resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+          } else {
+            resolve(file);
+          }
+        },
+        'image/jpeg',
+        0.85
+      );
+    };
+
+    img.onerror = () => resolve(file);
+    img.src = URL.createObjectURL(file);
+  });
+}
 
 export function UploadPanel({ onFileSelected, isLoading, error, progress }: UploadPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFiles = useCallback(
-    (files: FileList | null) => {
+    async (files: FileList | null) => {
       if (!files?.length) return;
       const file = files[0];
       if (!ACCEPTED.includes(file.type)) {
@@ -23,10 +69,18 @@ export function UploadPanel({ onFileSelected, isLoading, error, progress }: Uplo
         return;
       }
       if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-        alert(`File too large. Please upload an image smaller than ${MAX_SIZE_MB}MB.`);
+        // Try to compress instead of rejecting
+        const compressed = await compressImage(file);
+        if (compressed.size > MAX_SIZE_MB * 1024 * 1024) {
+          alert(`File too large. Please upload an image smaller than ${MAX_SIZE_MB}MB.`);
+          return;
+        }
+        onFileSelected(compressed);
         return;
       }
-      onFileSelected(file);
+      // Compress for faster upload
+      const optimized = await compressImage(file);
+      onFileSelected(optimized);
     },
     [onFileSelected]
   );
@@ -55,7 +109,7 @@ export function UploadPanel({ onFileSelected, isLoading, error, progress }: Uplo
         onChange={(e) => handleFiles(e.target.files)}
       />
       <p className="text-lg font-semibold text-white">Upload an image</p>
-      <p className="text-sm text-slate-300">Drag & drop or click to browse (max {MAX_SIZE_MB}MB)</p>
+      <p className="text-sm text-slate-300">Drag & drop or click to browse</p>
       <button
         type="button"
         className="mt-4 rounded-full bg-cyber-500 px-5 py-2 font-semibold text-white hover:bg-cyber-600 disabled:opacity-50"
