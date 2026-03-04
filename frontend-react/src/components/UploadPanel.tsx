@@ -9,13 +9,13 @@ interface UploadPanelProps {
 
 const ACCEPTED = ["image/png", "image/jpeg", "image/webp", "image/bmp", "image/tiff"];
 const MAX_SIZE_MB = 5;
-const MAX_DIMENSION = 1920;
+const MAX_DIMENSION = 1024; // Reduced for faster processing on free tier
 
 // Compress image for faster upload on mobile
 async function compressImage(file: File): Promise<File> {
   return new Promise((resolve) => {
-    // Skip non-image or already small files
-    if (!file.type.startsWith('image/') || file.size < 500 * 1024) {
+    // Skip non-image files
+    if (!file.type.startsWith('image/')) {
       resolve(file);
       return;
     }
@@ -27,7 +27,7 @@ async function compressImage(file: File): Promise<File> {
     img.onload = () => {
       let { width, height } = img;
       
-      // Scale down if too large
+      // Always scale down large images for faster processing
       if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
         const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
         width = Math.round(width * ratio);
@@ -40,14 +40,16 @@ async function compressImage(file: File): Promise<File> {
 
       canvas.toBlob(
         (blob) => {
-          if (blob && blob.size < file.size) {
-            resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+          if (blob) {
+            const compressed = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+            console.log(`Compressed: ${(file.size/1024/1024).toFixed(2)}MB → ${(compressed.size/1024/1024).toFixed(2)}MB`);
+            resolve(compressed);
           } else {
             resolve(file);
           }
         },
         'image/jpeg',
-        0.85
+        0.8 // More compression
       );
     };
 
