@@ -9,13 +9,19 @@ interface UploadPanelProps {
 
 const ACCEPTED = ["image/png", "image/jpeg", "image/webp", "image/bmp", "image/tiff"];
 const MAX_SIZE_MB = 5;
-const MAX_DIMENSION = 1024; // Reduced for faster processing on free tier
+const MAX_DIMENSION = 1536; // Balance between speed and accuracy
 
-// Compress image for faster upload on mobile
+// Compress image for faster upload BUT preserve quality for AI detection
 async function compressImage(file: File): Promise<File> {
   return new Promise((resolve) => {
     // Skip non-image files
     if (!file.type.startsWith('image/')) {
+      resolve(file);
+      return;
+    }
+    
+    // Skip already small files - preserve original quality
+    if (file.size < 1 * 1024 * 1024) {
       resolve(file);
       return;
     }
@@ -27,7 +33,7 @@ async function compressImage(file: File): Promise<File> {
     img.onload = () => {
       let { width, height } = img;
       
-      // Always scale down large images for faster processing
+      // Only scale down very large images
       if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
         const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
         width = Math.round(width * ratio);
@@ -49,7 +55,7 @@ async function compressImage(file: File): Promise<File> {
           }
         },
         'image/jpeg',
-        0.8 // More compression
+        0.92 // HIGH quality to preserve AI detection features
       );
     };
 
