@@ -11,7 +11,7 @@ export function ScoreCard({ title, score, subtitle }: ScoreCardProps) {
   else if (score >= 0.4) color = "text-neutral-300";
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5">
+    <div className="score-card rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5">
       <p className="text-sm text-neutral-500">{title}</p>
       <p className={`text-4xl font-bold ${color}`}>{percentage}%</p>
       <p className="text-xs uppercase tracking-wide text-neutral-500">{subtitle}</p>

@@ -12,14 +12,14 @@ export function HeatmapViewer({ originalSrc, heatmapBase64 }: HeatmapViewerProps
 
   if (!originalSrc) {
     return (
-      <div className="flex h-full items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/30">
+      <div className="heatmap-viewer flex h-full items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/30">
         <p className="text-neutral-500">Upload an image to preview</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-black/50 p-4">
+    <div className="heatmap-viewer rounded-2xl border border-neutral-800 bg-black/50 p-4">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-sm font-semibold text-slate-100">Heatmap Overlay</p>
         <label className="flex items-center gap-2 text-xs text-white">

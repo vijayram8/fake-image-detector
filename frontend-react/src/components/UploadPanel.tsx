@@ -34,7 +34,7 @@ export function UploadPanel({ onFileSelected, isLoading, error, progress }: Uplo
 
   return (
     <section
-      className={`rounded-2xl border-2 border-dashed p-6 text-center transition ${
+      className={`upload-panel rounded-2xl border-2 border-dashed p-6 text-center transition ${
         isDragging ? "border-white bg-neutral-900/40" : "border-neutral-700 bg-neutral-900/40"
       }`}
       onDragOver={(e) => {

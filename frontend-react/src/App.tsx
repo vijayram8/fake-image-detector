@@ -49,7 +49,7 @@ export default function App() {
           <ReportCard analysis={data as ImageAnalysisResponse | undefined} />
         </div>
         <div className="space-y-6 lg:col-span-2">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="scores-container grid gap-4 sm:grid-cols-2">
             <ScoreCard title="AI Generation Probability" score={data?.ai_score ?? 0} subtitle={aiSubtitle} />
             <ScoreCard title="Manipulation Probability" score={data?.manipulation_score ?? 0} subtitle="Heatmap-backed estimation" />
           </div>

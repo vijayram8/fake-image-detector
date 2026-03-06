@@ -6,3 +6,270 @@ body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: #000000;
 }
+
+/* ==================== PRINT STYLES FOR PDF REPORT ==================== */
+@media print {
+  /* Reset to white background for professional printing */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Main container */
+  .min-h-screen {
+    background: #ffffff !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* ===== PAGE 1: HEADER & TITLE ===== */
+  header {
+    page-break-after: always !important;
+    padding: 60px 40px !important;
+    text-align: center !important;
+    border-bottom: 3px solid #000 !important;
+    min-height: 90vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  header p:first-child {
+    font-size: 14pt !important;
+    font-weight: 600 !important;
+    letter-spacing: 4px !important;
+    color: #333 !important;
+    margin-bottom: 20px !important;
+  }
+
+  header h1 {
+    font-size: 28pt !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+    margin-bottom: 30px !important;
+    line-height: 1.2 !important;
+  }
+
+  header p:nth-child(3) {
+    font-size: 12pt !important;
+    color: #444 !important;
+    max-width: 500px !important;
+  }
+
+  /* Hide desktop optimization note in print */
+  header p:last-child {
+    display: none !important;
+  }
+
+  /* ===== HIDE UPLOAD PANEL IN PRINT ===== */
+  .upload-panel,
+  section[class*="border-dashed"] {
+    display: none !important;
+  }
+
+  /* ===== PAGE 2: IMAGE PREVIEW ===== */
+  .heatmap-viewer {
+    page-break-before: always !important;
+    page-break-after: always !important;
+    padding: 30px !important;
+    background: #fff !important;
+    border: none !important;
+    min-height: 90vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .heatmap-viewer p {
+    font-size: 16pt !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    margin-bottom: 30px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+  }
+
+  .heatmap-viewer img {
+    max-width: 100% !important;
+    max-height: 70vh !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border: 2px solid #000 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  }
+
+  /* ===== PAGE 3: ANALYSIS RESULTS ===== */
+  .score-card {
+    page-break-inside: avoid !important;
+    background: #f8f8f8 !important;
+    border: 2px solid #222 !important;
+    border-radius: 12px !important;
+    padding: 25px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .score-card p:first-child {
+    font-size: 11pt !important;
+    font-weight: 600 !important;
+    color: #555 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+  }
+
+  .score-card p:nth-child(2) {
+    font-size: 36pt !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+  }
+
+  .score-card p:nth-child(3) {
+    font-size: 10pt !important;
+    color: #666 !important;
+  }
+
+  /* Progress bar in print */
+  .score-card > div:last-child {
+    background: #e0e0e0 !important;
+    height: 10px !important;
+    border-radius: 5px !important;
+    overflow: hidden !important;
+  }
+
+  .score-card > div:last-child > div {
+    background: linear-gradient(to right, #333, #000) !important;
+  }
+
+  /* Score cards container - ensure on page 3 */
+  .scores-container {
+    page-break-before: always !important;
+  }
+
+  /* ===== REPORT CARD / VERDICT ===== */
+  .report-card {
+    page-break-inside: avoid !important;
+    background: #000 !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    margin: 20px 0 !important;
+    text-align: center !important;
+  }
+
+  .report-card h3 {
+    font-size: 14pt !important;
+    font-weight: 600 !important;
+    color: #ccc !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+  }
+
+  .report-card p:nth-child(2) {
+    font-size: 24pt !important;
+    font-weight: 800 !important;
+    color: #fff !important;
+    margin: 15px 0 !important;
+  }
+
+  .report-card p:nth-child(3) {
+    font-size: 11pt !important;
+    color: #aaa !important;
+  }
+
+  .report-card button {
+    display: none !important;
+  }
+
+  /* ===== METADATA TABLE ===== */
+  .metadata-table {
+    page-break-inside: avoid !important;
+    background: #fafafa !important;
+    border: 2px solid #222 !important;
+    border-radius: 12px !important;
+    padding: 25px !important;
+    margin-top: 20px !important;
+  }
+
+  .metadata-table p:first-child {
+    font-size: 14pt !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    border-bottom: 2px solid #222 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .metadata-table ul {
+    list-style: none !important;
+    padding: 0 !important;
+  }
+
+  .metadata-table li {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid #eee !important;
+    font-size: 10pt !important;
+  }
+
+  .metadata-table li span:first-child {
+    color: #555 !important;
+    font-weight: 500 !important;
+  }
+
+  .metadata-table li span:last-child {
+    color: #000 !important;
+    font-weight: 600 !important;
+  }
+
+  /* Warnings box */
+  .metadata-table > div:last-child {
+    background: #fff3cd !important;
+    border: 1px solid #ffc107 !important;
+    color: #856404 !important;
+    border-radius: 8px !important;
+    padding: 15px !important;
+    margin-top: 15px !important;
+  }
+
+  /* ===== GRID LAYOUT FOR PRINT ===== */
+  main {
+    display: block !important;
+    padding: 0 40px !important;
+  }
+
+  main > div:first-child {
+    display: none !important; /* Hide upload panel column */
+  }
+
+  main > div:last-child {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* ===== PAGE SETUP ===== */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  /* Footer for each page */
+  @page {
+    @bottom-center {
+      content: "AI Image Authenticity Report";
+      font-size: 9pt;
+      color: #888;
+    }
+  }
+}

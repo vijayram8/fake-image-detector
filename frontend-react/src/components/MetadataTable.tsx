@@ -9,7 +9,7 @@ export function MetadataTable({ metadata, flags }: MetadataTableProps) {
   const entries = Object.entries(metadata ?? {});
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5">
+    <div className="metadata-table rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-white">Metadata Forensics</p>
         {flags?.metadata_status === "missing" && (

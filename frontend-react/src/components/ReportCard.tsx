@@ -7,14 +7,14 @@ interface ReportCardProps {
 export function ReportCard({ analysis }: ReportCardProps) {
   if (!analysis) {
     return (
-      <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 text-center text-neutral-500">
+      <div className="report-card rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 text-center text-neutral-500">
         Upload an image to view the forensic verdict.
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 text-white">
+    <div className="report-card rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 text-white">
       <h3 className="text-lg font-semibold text-white">Verdict</h3>
       <p className="mt-1 text-2xl font-bold text-white">{analysis.verdict}</p>
       <p className="mt-4 text-sm text-neutral-400">
