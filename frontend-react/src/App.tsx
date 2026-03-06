@@ -31,14 +31,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cyber-900 to-black p-6 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-neutral-950 to-black p-6 text-white">
       <header className="mx-auto max-w-6xl pb-8">
-        <p className="text-sm uppercase tracking-widest text-cyber-200">AI Image Authenticity Analyzer</p>
+        <p className="text-sm uppercase tracking-widest text-neutral-300">AI Image Authenticity Analyzer</p>
         <h1 className="text-3xl font-bold">Detect AI-generated, edited & manipulated imagery</h1>
-        <p className="mt-2 text-slate-300">
+        <p className="mt-2 text-neutral-400">
           Upload any photo to receive AI probability, manipulation heatmaps, metadata forensics, and a downloadable report.
         </p>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-neutral-500">
           🖥️ Desktop-optimized for maximum CLIP model accuracy. Best experienced on Chrome/Firefox/Edge.
         </p>
       </header>

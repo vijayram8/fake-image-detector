@@ -6,12 +6,13 @@ export default {
     extend: {
       colors: {
         cyber: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          900: "#0f172a",
+          50: "#fafafa",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
+          300: "#d4d4d4",
+          500: "#525252",
+          600: "#404040",
+          900: "#0a0a0a",
         },
       },
       fontFamily: {
